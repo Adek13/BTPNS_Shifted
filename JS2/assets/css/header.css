@@ -1,0 +1,40 @@
+.header{
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.header ul{
+    width: 100%;
+    height: max-content;
+    display: inherit;
+    justify-content: flex-end;
+    align-content: center;
+}
+.nav-link{
+    display: flex;
+    color: white;
+    align-content: center;
+    height: max-content;
+    margin: 0;
+    padding: 20px 40px;
+}
+.nav-link:not(.active):hover{
+    color: black;
+    background: rgba(255, 255, 255, .5);
+    animation: fade 1s forwards;
+    cursor: pointer;
+    border-bottom: #F67D20 solid 2px;
+}
+.nav-link.active{
+    color: black;
+    background: rgba(255, 255, 255, .5);
+    cursor: pointer;
+    border-bottom: #F67D20 solid 2px;
+}
+@keyframes fade{
+    from{
+        opacity: 0%;
+    }to{
+        opacity: 100%;
+    }
+}

@@ -443,17 +443,12 @@ function hubungi(){
 function prosesLogin(){
     var loginEmail = document.querySelector("#login-email").value;
     var loginPassword = document.querySelector("#login-password").value;
-    for (let index = 0; index < data.length; index++) {
-        if(data[index].email==loginEmail && data[index].pass==loginPassword){
-            dataLogin = data[index];
-            dataLogin.login = true;
-            dataLogin.key = index;
-            login();
-        }
-    }
-    if(Object.keys(dataLogin).length === 0){
-        alert("Maaf Username Atau Password Salah!")
-    }
+    console.log(data);
+    dataLogin = data.filter(atr => atr.email == loginEmail && atr.pass == loginPassword)
+    console.log(dataLogin);
+    // if(Object.keys(dataLogin).length === 0){
+    //     alert("Maaf Username Atau Password Salah!")
+    // }
 }
 function prosesDaftar(){
     var nama = document.querySelector("#nama").value;

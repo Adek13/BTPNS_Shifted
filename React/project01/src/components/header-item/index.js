@@ -7,7 +7,7 @@ class HeaderItem extends Component {
     }
     render() { 
         return ( 
-        <div className={"header-item " + this.props.className} onClick={this.props.goTo()}>{this.props.children}</div>
+        <div className={"header-item " + this.props.className} content={this.props.content} onClick={this.props.goTo}>{this.props.children}</div>
          );
     }
 }

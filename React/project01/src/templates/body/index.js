@@ -5,7 +5,6 @@ class Body extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            page: "Daftar",
             dataRegister: [],
             dataLogin: {}
         }
@@ -31,10 +30,10 @@ class Body extends Component {
         if(page === "Masuk"){
             return <Login dataRegister={this.state.dataRegister} dataLogin={this.state.dataLogin} updateLogin={this.updateLogin}/>
         }
-        if(page === "Hubungi Kami"){
+        if(page === "Hubungi"){
             return <Hubungi />
         }
-        if(page === "List Album"){
+        if(page === "List"){
             return <ListAlbum />
         }
         if(page === "Beranda"){

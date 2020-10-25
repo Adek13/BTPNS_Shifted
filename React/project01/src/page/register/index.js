@@ -12,7 +12,7 @@ class Register extends Component {
     onChangeInput = e =>{
         this.setState(data =>{
             data.data[e.target.name] = e.target.value
-            console.log(data);
+            // console.log(data);
         })
     }
     onClickRegister = async () =>{

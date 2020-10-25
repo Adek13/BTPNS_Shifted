@@ -6,31 +6,30 @@ class Nav extends Component {
         super(props);
         this.state = {  }
     }
-    renderNav(){
-        const {statusLogin} = this.props
-        if(!statusLogin){
+    renderNav = (statusLogin) => {
+        if(statusLogin){
             return<>
-                    <HeaderItem goTo={() => this.props.changePage}>Beranda</HeaderItem>
-                    <HeaderItem goTo={() => this.props.changePage}>Tentang</HeaderItem>
-                    <HeaderItem goTo={() => this.props.changePage}>Hubungi Kami</HeaderItem>
-                    <HeaderItem goTo={() => this.props.changePage}>List Album</HeaderItem>
-                    <HeaderItem goTo={() => this.props.changePage}>Masuk</HeaderItem>
-                    <HeaderItem goTo={() => this.props.changePage} className="active">Daftar</HeaderItem>
+                    <HeaderItem content="Beranda" goTo={() => this.props.changePage("Beranda")}>Beranda</HeaderItem>
+                    <HeaderItem content="Tentang" goTo={() => this.props.changePage("Tentang")}>Tentang</HeaderItem>
+                    <HeaderItem content="Hubungi" goTo={() => this.props.changePage("Hubungi")}>Hubungi Kami</HeaderItem>
+                    <HeaderItem content="List" goTo={() => this.props.changePage("List")}>List Album</HeaderItem>
+                    <HeaderItem content="Logout" goTo={() => this.props.changeStatus(false)}>Logout</HeaderItem>
                 </>
         }else{
             return<>
-                    <HeaderItem goTo={() => this.props.changePage}>Beranda</HeaderItem>
-                    <HeaderItem goTo={() => this.props.changePage}>Tentang</HeaderItem>
-                    <HeaderItem goTo={() => this.props.changePage}>Hubungi Kami</HeaderItem>
-                    <HeaderItem goTo={() => this.props.changePage}>List Album</HeaderItem>
-                    <HeaderItem goTo={() => this.props.changeStatus(false)}>Logout</HeaderItem>
+                    <HeaderItem content="Beranda" goTo={() => this.props.changePage("Beranda")}>Beranda</HeaderItem>
+                    <HeaderItem content="Tentang" goTo={() => this.props.changePage("Tentang")}>Tentang</HeaderItem>
+                    <HeaderItem content="Hubungi" goTo={() => this.props.changePage("Hubungi")}>Hubungi Kami</HeaderItem>
+                    <HeaderItem content="List" goTo={() => this.props.changePage("List")}>List Album</HeaderItem>
+                    <HeaderItem content="Masuk" goTo={() => this.props.changePage("Masuk")}>Masuk</HeaderItem>
+                    <HeaderItem content="Daftar" goTo={() => this.props.changePage("Daftar")} className="active">Daftar</HeaderItem>
                 </>
         }
     }
     render() { 
         return ( 
         <div className="navigation">
-            {this.renderNav()}
+            {this.renderNav(this.props.statusLogin)}
         </div> );
     }
 }

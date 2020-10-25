@@ -1,0 +1,17 @@
+.col.goals {
+    color: white;
+    min-height: 400px;
+}
+
+li{
+    list-style: none;
+}
+h2, blockquote, li{
+    text-align: center;
+}
+blockquote, li {
+    font-size: 2em;
+}
+blockquote{
+    font-style: italic;
+}

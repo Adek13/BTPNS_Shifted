@@ -3,17 +3,24 @@ var dataLogin = {};
 
 init = async () => {
     const nav = getAll(".nav-link:not([use='logout'])");
-    for (let i = 0; i < nav.length; i++) {
-        const element = nav[i];
-        element.addEventListener("click", () => showPage(element.getAttribute("content")));        
-    }
+    nav.forEach(element => {
+        element.addEventListener("click", () => showPage(element.getAttribute("content")));
+    });
+    // nav.map((element)=>{
+        
+    // })
+    // for (let i = 0; i < nav.length; i++) {
+    //     const element = nav[i];
+    //     element.addEventListener("click", () => showPage(element.getAttribute("content")));        
+    // }
     get(".btn-masuk").addEventListener("click", () => prosesLogin());
     get(".btn-daftar").addEventListener("click", () => showPage("daftar"));
     get(".btn-login").addEventListener("click", () => showPage("masuk"));
     get(".btn-simpan").addEventListener("click", () => prosesDaftar());
     get(".nav-link[use='logout']").addEventListener("click", () => logout());
-    get(".btn-search").addEventListener("click", async () => await searchData(get(".input-search").value));
-    showData(await search(""));
+    get(".btn-search").addEventListener("click", async () => renderData(await getList(), get(".input-search").value));
+    renderData(await getList());
+    // searchData("");
 }
 var getAll = (selector) => document.querySelectorAll(selector);
 var get = (selector) => document.querySelector(selector);
@@ -23,55 +30,153 @@ var showPage = (content) => {
     get(".main-content.active").classList.remove("active");
     get(".main-content[key='"+content+"']").classList.add("active");
 }
+// var showData2 = (dataList) => {
+//     let tbody = get(".tbl-user tbody");
+//     count   = 1;
+//     tr = dataList.map(x => {
+//         return `
+//             <tr>
+//                 <td>${count}</td>
+//                 <td>${x.title}</td>
+//             </tr>
+//         `
+//     })
+// }
+var renderData = (start="", end="", searchValue = "") => {
+    let tbody = get(".tbl-user tbody");
+    tbody.innerHTML = "";
+    let no          = 1;
+    let tr          ="";
+    if(start == "" && end == ""){
+        tr = dataList.filter( x => x.userId.toString().indexOf(searchValue) >= 0 || x.title.toString().indexOf(searchValue) >= 0).map(element=>{
+                return `
+                    <tr>
+                        <td>${no++}</td>
+                        <td>${element.title}</td>
+                        <td>${element.userId}</td>
+                    </tr>
+                `;
+            });
+    }else{
+        tr = dataList.filter( x => (x.userId.toString().indexOf(searchValue) >= 0 || x.title.toString().indexOf(searchValue) >= 0)&&x.id>=start&&x.id<=end).map(element=>{
+            return `
+                <tr>
+                    <td>${no++}</td>
+                    <td>${element.title}</td>
+                    <td>${element.userId}</td>
+                </tr>
+            `;
+        });
+    }
+    console.log(tr);
+    tbody.innerHTML += tr.join("");
+    renderPagination(dataList.length, 10);
+}
+var getList = () => {
+    return fetch("https://jsonplaceholder.typicode.com/albums")
+    .then(response => response.json())
+    .then(response => dataList = response)
+}
+renderPagination = (data, page) => {
+    console.log(data);
+    let ul          = get(".pagination");
+    ul.innerHTML    = "";
+    ul.innerHTML    += `<li class="page-link active" page="1">First Page</li>`;
+    let rowData     = 10;
+    let limitPage   = 5;
+    let kiriKanan   = Math.floor(limitPage/2);
+    let start       = page - kiriKanan;
+    let end         = page + kiriKanan;
+    if(page<=kiriKanan){
+        start       = 1;
+        end         = limitPage;
+    }else if(page>=data.length-kiriKanan){
+        start       = data.length - limitPage;
+        end         = data.length;
+    }
+    for (let i = start; i <= end; i++) {
+        ul.innerHTML += `<li class="page-link active" page="${i}">${i}</li>`
+    }
+    ul.innerHTML    += `<li class="page-link active" page="${page}">Last Page</li>`;
+}
 var showData = async (key, start="", end="") => {
     let tbl = get(".tbl-user");
     tbl.children[1].innerHTML = await "";
-    let x = 0;
-    // key.forEach(async element => {
-    //     let nama = await getUser(element.userId);
-    //     tbl.children[1].innerHTML += 
-    //     `
-    //         <tr>
-    //             <td>${x+1}</td>
-    //             <td>${element.id}</td>
-    //             <td>${element.title}</td>
-    //             <td nowrap="nowrap">${nama[0].name}</td>
-    //         </tr>
-    //     `;
-    //     if(dataLogin.length){
-    //         tbl.children[0].children[0].lastElementChild.style.display= "none"
-    //         tbl.children[1].children[x].lastElementChild.style.display= "none"
-    //     }
-    //     x++;
-    // });
     let total = key.length;
-    let pageSize = 10;
+    let pageSize = 5;
+    let paginationLimit = 5;
     if(pageSize>key.length){
         pageSize = key.length
     }
     let page    = Math.ceil(total/pageSize);
     let setPage = {}
     if(start =="" && end == ""){
+        start = 0
+        end = pageSize
         setPage = {
             start   : 0,
-            end     : pageSize-1
+            end     : pageSize
         }
     }else{
         setPage.start = start
         setPage.end = end
     }
+    let pagination = get(".pagination")
+    x=0;
+    pagination.innerHTML ="";
+    let pageNum = {
+        start : 0,
+        end : pageSize
+    }
+    let d = Math.floor(paginationLimit/2);
+    console.log(page);
+    pagination.innerHTML = "";
+    pagination.innerHTML += `<li class="page-item page-link" start="0" end="${pageSize}">First</li>`
+    pageStart = Math.ceil((setPage.start/pageSize)-d);
+    pageEnd = Math.ceil((setPage.start/pageSize)+d);
+    if(pageStart<0){
+        pageStart=0;
+        pageEnd=paginationLimit-1;
+    }
+    if((end/pageSize)>(page-d)){
+        pageStart=page-paginationLimit;
+        pageEnd=page-1;
+    }
+    for (let i = pageStart; i <= pageEnd; i++) {
+        pagination.innerHTML += 
+        `
+        <li class="page-item page-link" start="${i*pageSize}" end="${(i*pageSize)+pageSize}">${i+1}</li>
+        `;
+        if(setPage.start == 0){
+            setPage.start = parseInt(setPage.start);
+            setPage.end   = parseInt(setPage.end); 
+        }else{
+            setPage.start = parseInt(setPage.start) + pageSize;
+            setPage.end   = parseInt(setPage.end) + pageSize;
+        }
+        if(pageEnd==total){
+            break;
+        }
+         
+    }
+    pagination.innerHTML += `<li class="page-item page-link" start="${total-pageSize}" end="${total}">Last</li>`
+    let hli = Array.from(getAll(".page-item"));
+    hli.forEach(x => {
+        let start = x.getAttribute("start");
+        let end = x.getAttribute("end");
+        x.addEventListener("click", () => showData(key, start, end))
+    });
+    let userAll = await getUserAll();
     let y= 0;
-    console.log(key);
-    for (var i = parseInt(setPage.start); i <= parseInt(setPage.end); i++) {
-        console.log(setPage.end);
-        let nama = await getUser(key[i].userId);
+    let dataLoop = key.slice(start, end);
+    dataLoop.forEach(element => {
+        let getOne = userAll.filter(x => x.id == element.userId)
         tbl.children[1].innerHTML += 
         `
             <tr>
-                <td>${i+1}</td>
-                <td>${key[i].id}</td>
-                <td>${key[i].title}</td>
-                <td nowrap="nowrap">${nama[0].name}</td>
+                <td>${y+1}</td>
+                <td>${element.title}</td>
+                <td nowrap="nowrap">${getOne[0].name}</td>
             </tr>
         `;
         if(dataLogin.length){
@@ -79,31 +184,13 @@ var showData = async (key, start="", end="") => {
             tbl.children[1].children[y].lastElementChild.style.display= "none"
         }
         y++
-    }
-    let pagination = get(".pagination")
-    let pageLi = document.createElement("li")
-    x=0;
-    pagination.innerHTML ="";
-    let pageNum = {
-        start : 0,
-        end : pageSize-1
-    }
-    for (let i = 0; i < page; i++) {
-        pagination.innerHTML += 
-        `
-        <li class="page-item page-link" start="${pageNum.start}" end="${pageNum.end}">${i+1}</li>
-        `;
-        pageNum.start = parseInt(pageNum.start) + pageSize;
-        pageNum.end   = parseInt(pageNum.end) + pageSize; 
-    }
-    let hli = getAll(".page-item");
-    hli.forEach(element => {
-        let start = element.getAttribute("start");
-        let end = element.getAttribute("end");
-        element.addEventListener("click", () => showData(key, start, end))
     });
     
 }
+// var activePage = () => {
+//     let activePage = get(".page-link.active").innerHTML;
+//     let showPage
+// }
 var prosesLogin = async () =>{
     var formLogin = document.login;
     fetch("https://jsonplaceholder.typicode.com/users")
@@ -122,6 +209,10 @@ var prosesLogin = async () =>{
             }
         })
         .catch(error => alert(error))
+}
+var getUserAll = () => {
+    return fetch("https://jsonplaceholder.typicode.com/users")
+    .then(response => response.json())
 }
 var getUser = (id) => {
     return fetch("https://jsonplaceholder.typicode.com/users")
@@ -146,7 +237,7 @@ var searchData = async (val) => {
     }else{
         hasil = await search(val)
     }
-    showData(hasil)
+    showData2(hasil)
 }
 var prosesDaftar = () => {
     let form = document.register;

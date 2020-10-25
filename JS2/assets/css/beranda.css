@@ -68,3 +68,6 @@ ul li{
 .container label,h2{
     color: white;
 }
+.page-link:hover{
+    cursor: pointer;
+}

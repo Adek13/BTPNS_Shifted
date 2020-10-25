@@ -1,0 +1,7 @@
+.body-hubungi{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    min-width: 500px;
+    margin-bottom: 50px;
+}

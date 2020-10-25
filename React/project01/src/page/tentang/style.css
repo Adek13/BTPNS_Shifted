@@ -1,0 +1,21 @@
+.box{
+    width: 500px;
+    background: rgba(255, 147, 5, 0.938);
+    padding: 40px;
+    text-align: center;
+    margin: auto;
+    margin-top: 5%;
+    margin-bottom: 200px;
+    color: rgb(255, 255, 255);
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.box-img{
+    width: 200px;
+    height: 100px;
+    
+}
+.box p{
+    text-align: justify;
+    text-align: center;
+
+}

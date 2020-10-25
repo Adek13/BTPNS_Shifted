@@ -1,0 +1,31 @@
+.header-item{
+    display: flex;
+    color: white;
+    align-content: center;
+    height: max-content;
+    margin: 0;
+    padding: 20px 40px;
+}
+.header-item:hover{
+    color: black;
+    background: rgba(255, 255, 255, .7);
+    border-bottom: #F67D20 solid 2px;
+    animation: fade forwards 1s;
+    cursor: pointer;
+}
+.header-item.header-item.active:hover{
+    animation: none;
+}
+.header-item.active{
+    color: black;
+    background: rgba(255, 255, 255, .7);
+    border-bottom: #F67D20 solid 2px;
+    cursor: pointer;
+}
+@keyframes fade {
+    from {
+        opacity: 0;
+    }to {
+        opacity: 100%;
+    }
+}

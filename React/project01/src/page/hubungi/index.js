@@ -1,6 +1,7 @@
 import React, {Component} from "react"
 import "./style.css"
 import {Form, FormRow, TextArea, Btn} from "../../components"
+import {Redirect} from "react-router-dom"
 
 class Hubungi extends Component {
     constructor(props) {
@@ -8,6 +9,9 @@ class Hubungi extends Component {
         this.state = {  }
     }
     render() { 
+        if(!this.props.statusLogin){
+            return <Redirect to="/login" />
+        }
         return ( 
             <div className="body-hubungi" style={{marginTop: 50}}>
                 <h2 className="text-white" style={{marginBottom: 20}}>Hubungi Kami</h2>

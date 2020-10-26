@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {H1, P, H3} from "../../components"
 import syariah from "../../syariah.jpg"
 import "./style.css"
+import {Redirect} from "react-router-dom"
 
 class Tentang extends Component {
     constructor(props) {
@@ -9,9 +10,11 @@ class Tentang extends Component {
         this.state = {  }
     }
     render() { 
+        if(this.props.statusLogin)
+            return <Redirect to="/" />
         return ( 
-            <div class="box">
-                <img src={syariah} alt="" class="box-img" />
+            <div className="box">
+                <img src={syariah} alt="" className="box-img" />
                 <H1>BTPN SYARIAH</H1>
                 <H3>Visi :</H3>
                 <P>Menjadi bank syariah terbaik untuk keuangan inklusif, mengubah hidup berjuta rakyat Indonesia</P>

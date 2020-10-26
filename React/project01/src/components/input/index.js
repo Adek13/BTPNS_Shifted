@@ -7,7 +7,15 @@ class Input extends Component {
     }
     render() { 
         return ( 
-            <input type={this.props.type} placeholder={this.props.placeholder} className={"input--style-1 "+this.props.className} name={this.props.name} onChange={this.props.onChangeInput} />
+            <input 
+                type={this.props.type} 
+                placeholder={this.props.placeholder} 
+                className={"form-control "+this.props.className} 
+                name={this.props.name} 
+                onChange={this.props.onChangeInput} 
+                value={this.props.value}    
+                readOnly={this.props.readonly}
+            />
          );
     }
 }

@@ -1,27 +1,32 @@
 import React, {Component} from "react"
-import {Card, CardBody, CardTitle, Form, FormCol, FormRow, Row, Btn, Anchor, Select} from "../../components";
+import {Card, CardBody, CardTitle, Form, Row, Btn, Anchor, FormLabel} from "../../components";
 import "./style.css"
 import Logo from "../../tepat.png"
 class Register extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            data : {}
+            name : "",
+            username : "",
+            email: "",
+            password: "",
+            phone: "",
+            website : ""
         }
     }
     onChangeInput = e =>{
-        this.setState(data =>{
-            data.data[e.target.name] = e.target.value
+        this.setState({
+            [e.target.name] : e.target.value
             // console.log(data);
         })
     }
     onClickRegister = async () =>{
         // console.log("tes");
-        let registered = await this.props.dataRegister.filter(x => x.email === this.state.data.email)
+        let registered = await this.props.dataRegister.filter(x => x.email === this.state.email)
         if(registered.length){
             alert("Email Sudah Digunakan, Silahkan Gunakan Email Lain!")
         }else{
-            this.props.addRegister(this.state.data)
+            this.props.addRegister(this.state)
             this.setState(x => x.data = {})
             document.formRegister.reset()
         }
@@ -34,20 +39,13 @@ class Register extends Component {
                     <img className="" src={Logo} alt="" style={{width: "100%"}}></img>
                 </CardTitle>
                 <CardBody style={{padding: 50}}>
-                    <Form className="form-register" name="formRegister">
-                        <FormRow input={{type:"text", name:"nama", placeholder:"Nama Lengkap", onChangeInput: this.onChangeInput}}/>
-                        <FormRow input={{type:"email", name:"email", placeholder:"Email", onChangeInput: this.onChangeInput}}/>
-                        <FormRow input={{type:"password", name:"password", placeholder:"Password", onChangeInput: this.onChangeInput}}/>
-                        <Row className="rows d-flex justify-content-between">
-                            <FormCol className="form-col" style={{width: "max-content"}}>
-                                <FormRow input={{type:"date", name:"birthday", placeholder:"", onChangeInput: this.onChangeInput}}/>
-                            </FormCol>
-                            <FormCol className="form-col">
-                                <div className="form-row">
-                                    <Select isiOption={["Jenis Kelamin", "Laki-laki", "Perempuan"]} name="gender" onChangeInput={this.onChangeInput} className="custom-select"></Select>
-                                </div>
-                            </FormCol>
-                        </Row>
+                        <Form className="form-register" name="formRegister">
+                        <FormLabel input={{type:"text", name:"name", placeholder: "Name", onChangeInput: this.onChangeInput, label: "Name"}}/>
+                        <FormLabel input={{type:"text", name:"username", placeholder: "Username", onChangeInput: this.onChangeInput, label: "Username"}}/>
+                        <FormLabel input={{type:"email", name:"email", placeholder: "Email", onChangeInput: this.onChangeInput, label: "Email"}}/>
+                        <FormLabel input={{type:"password", name:"password", placeholder: "Password", onChangeInput: this.onChangeInput, label: "Password"}}/>
+                        <FormLabel input={{type:"text", name:"phone", placeholder: "Phone", onChangeInput: this.onChangeInput, label: "Phone"}}/>
+                        <FormLabel input={{type:"text", name:"website", placeholder: "Website", onChangeInput: this.onChangeInput, label: "Website"}}/>
                         <Row>
                             <Btn className="btn btn-success btn-lg" onClick={this.onClickRegister}>Simpan</Btn>
                             <Anchor className="text-primary ml-2">Sudah Punya Akun? Klik Untuk login</Anchor>

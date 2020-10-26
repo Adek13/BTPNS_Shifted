@@ -13,7 +13,7 @@
     animation: fade forwards 1s;
     cursor: pointer;
 }
-.header-item.header-item.active:hover{
+.header-item.active:hover{
     animation: none;
 }
 .header-item.active{

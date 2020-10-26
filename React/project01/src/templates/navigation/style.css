@@ -2,3 +2,15 @@
     display: flex;
     justify-content: flex-end;
 }
+a:hover{
+    text-decoration: none;
+}
+a.active .header-item:hover{
+    animation: none;
+}
+a.active .header-item{
+    color: black;
+    background: rgba(255, 255, 255, .7);
+    border-bottom: #F67D20 solid 2px;
+    cursor: pointer;
+}

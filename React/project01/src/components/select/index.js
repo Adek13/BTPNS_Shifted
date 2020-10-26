@@ -11,7 +11,7 @@ class Select extends Component {
             <select name={this.props.name} className={`input--style-1 ${this.props.className}`} onChange={this.props.onChangeInput}>
                 {
                     this.props.isiOption.map(element => {
-                        return <Option isi={element}/>
+                        return <Option isi={element} key={element}/>
                     })
                 }
             </select>

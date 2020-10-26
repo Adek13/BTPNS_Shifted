@@ -25,6 +25,7 @@ import Ul from "./ul"
 import Li from "./li"
 import CarouselBeranda from "./carousel-beranda"
 import BlockQuote from "./blockquote"
+import FormLabel from "./form-label"
 
 export { HeaderItem, Input, Select, Card, CardBody, CardTitle, Img, Form, FormRow, FormCol, Row, Btn, Anchor, FormLogin, TextArea,
-         ColGoals, Hr, I, Jumbotron, P, H1, H2, H3, Ul, Li, CarouselBeranda, BlockQuote}
+         ColGoals, Hr, I, Jumbotron, P, H1, H2, H3, Ul, Li, CarouselBeranda, BlockQuote, FormLabel}

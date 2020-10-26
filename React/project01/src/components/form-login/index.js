@@ -15,25 +15,21 @@ class FormLogin extends Component {
             // console.log(data);
         })
     }
-    onClickLogin = () =>{
+    onClickLogin = async () =>{
         // console.log("tes");.
-        let dataSearch = this.props.dataRegister.filter(register => register.email === this.state.email && register.password === this.state.password)
-        if(dataSearch.length){
-            this.props.updateLogin(dataSearch);
-            alert("Berhasil Login")
-        }else{
-            alert("Email atau Password Salah!")
-        }
-        this.setState(x => x = {})
+        await this.props.updateLogin(this.state);
+    }
+    register = () => {
+        console.log({...this.props});
     }
     render() { 
         return ( 
             <Card style={{maxWidth: 500, padding: 25, marginRight: 100}}>
                 <CardBody style={{minWidth: 350, display: "flex", flexDirection: "column"}}>
-                    <FormRow input={{type: "email", name:"email", placeholder:"Email", onChangeInput: this.onChangeInput}}/>
+                    <FormRow input={{type: "text", name:"username", placeholder:"Username", onChangeInput: this.onChangeInput}}/>
                     <FormRow className="" input={{type: "password", name:"password", placeholder:"Password", onChangeInput: this.onChangeInput}}/>
                     <Btn className="btn btn-primary btn-lg text-white mb-2" style={{maxWidth: '100%'}} onClick={this.onClickLogin}>Login</Btn>
-                    <Btn className="btn btn-warning btn-lg text-white" style={{maxWidth: '100%'}}>Buat Akun</Btn>
+                    <Btn className="btn btn-warning btn-lg text-white" style={{maxWidth: '100%'}} onClick={this.register}>Buat Akun</Btn>
                 </CardBody>
             </Card>
          );

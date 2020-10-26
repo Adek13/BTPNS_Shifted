@@ -11,7 +11,7 @@ class Ul extends Component {
             <ul>
                 {
                     this.props.li.text.map( element => {
-                    return <Li iclass={this.props.li.iclass}>{element}</Li>
+                    return <Li iclass={this.props.li.iclass} key={element}>{element}</Li>
                     })
                 }
             </ul>

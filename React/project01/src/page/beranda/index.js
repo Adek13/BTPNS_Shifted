@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import {Jumbotron, Row, ColGoals, BlockQuote, Ul, CarouselBeranda} from '../../components/';
 import "./style.css"
 
@@ -10,6 +11,9 @@ class Beranda extends Component {
     render() { 
         return ( 
             <div className="beranda">
+                <Link to="/login">
+                    Login
+                </Link>
                 <Jumbotron className="jumbotrons"/>
                 <Row className="row m-0" id="more">
                     <ColGoals h2value="Tujuan Kami">

@@ -2,6 +2,7 @@ import React, {Component} from "react"
 import {Card, CardBody, CardTitle, Form, Row, Btn, Anchor, FormLabel} from "../../components";
 import "./style.css"
 import Logo from "../../tepat.png"
+import { connect } from "react-redux";
 class Register extends Component {
     constructor(props) {
         super(props);
@@ -11,7 +12,7 @@ class Register extends Component {
             email: "",
             password: "",
             phone: "",
-            website : ""
+            website : "",
         }
     }
     onChangeInput = e =>{
@@ -22,17 +23,21 @@ class Register extends Component {
     }
     onClickRegister = async () =>{
         // console.log("tes");
-        let registered = await this.props.dataRegister.filter(x => x.email === this.state.email)
+        let registered = await this.props.dataUser.filter(x => x.email === this.state.email)
+        console.log(registered)
         if(registered.length){
             alert("Email Sudah Digunakan, Silahkan Gunakan Email Lain!")
         }else{
-            this.props.addRegister(this.state)
+            let dataBaru = [...this.props.dataUser, {...this.state, status: "admin"}]
+            // console.log(dataBaru);
+            this.props.doRegister(dataBaru)
             this.setState(x => x.data = {})
             document.formRegister.reset()
         }
         
     }
     render(){
+        console.log(this.props);
         return ( 
             <Card style={{minWidth: 700, marginTop: 100, marginBottom: 200}}>
                 <CardTitle>
@@ -56,5 +61,13 @@ class Register extends Component {
          );
     }
 }
- 
-export default Register;
+
+const mapStateToProps = state => ({
+    dataUser: state.data.dataUser
+})
+
+const mapDispatchToProps = dispatch => ({
+    doRegister: (data) => dispatch({type:"addUser", payload: {dataUser: data}})
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

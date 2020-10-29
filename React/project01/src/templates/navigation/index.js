@@ -2,6 +2,7 @@ import React, {Component} from "react"
 import {HeaderItem} from "../../components"
 import {NavLink} from "react-router-dom"
 import "./style.css"
+import { connect } from "react-redux";
 class Nav extends Component {
     constructor(props) {
         super(props);
@@ -32,7 +33,7 @@ class Nav extends Component {
                     <NavLink activeClassName="active" to="/listUser">
                         <HeaderItem content="ListUser">List Users</HeaderItem>
                     </NavLink>
-                    <HeaderItem content="Logout" goTo={() => this.props.changeStatus(false)}>Logout</HeaderItem>
+                    <HeaderItem content="Logout" goTo={() => this.props.doLogout()}>Logout</HeaderItem>
                 </>
                 :
                 <>
@@ -47,5 +48,12 @@ class Nav extends Component {
         </div> );
     }
 }
+const mapStateToProps = (state) => ({
+    statusLogin: state.auth.statusLogin
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    doLogout: () => dispatch({type: "logout"})
+})
  
-export default Nav;
+export default connect(mapStateToProps, mapDispatchToProps)(Nav);

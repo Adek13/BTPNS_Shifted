@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {Card, CardTitle, H1, CardBody} from "../../components"
 import {Link, Redirect} from "react-router-dom"
+import { connect } from 'react-redux';
 
 class ListUser extends Component {
     constructor(props) {
@@ -10,42 +11,48 @@ class ListUser extends Component {
          }
     }
     renderTableData() {
-        const {dataRegister, dataLogin, statusLogin} = this.props
+        const {dataUser, statusLogin, dataLogin} = this.props
         let aksi
-        return dataRegister.map((data, index) => {
+        return dataUser.map((data, index) => {
            const { id, name, username, email } = data //destructuring
            if(statusLogin === "user" && dataLogin.id === id){
-                aksi = <td><Link to={{
-                    pathname: "/detail",
-                    state: {data : data}
-                }}>Lihat Detail</Link> | <Link to={{
-                    pathname: "/edit",
-                    state: {data : data}
-                }}>Edit</Link></td>
+                aksi = <>
+                        <Link className="btn btn-sm btn-secondary" to={{
+                                pathname: "/detail",
+                                state: {data : data}
+                            }}>Lihat Detail</Link>
+                        <Link className="btn btn-sm btn-warning" to={{
+                                pathname: "/edit",
+                                state: {data : data}
+                            }}>Edit</Link>
+                       </>
            }else if(statusLogin === "admin"){
-            aksi = <td><Link to={{
-                pathname: "/detail",
-                state: {data : data}
-            }}>Lihat Detail</Link> | <Link to={{
-                pathname: "/edit",
-                state: {data : data},
-                // Kirim Function update data dan index ke halaman edit sebagai props.location
-                onUpdateData: this.props.onUpdateData,
-                index: index
-            }}>Edit</Link> | <Link onClick={() => this.props.onDeleteUser(index)}>Hapus</Link></td>
+            aksi = <>
+                    <Link className="btn btn-sm btn-secondary" to={{
+                            pathname: "/detail",
+                            state: {data : data}
+                        }}>Lihat Detail</Link>
+                    <Link className="btn btn-sm btn-warning" to={{
+                            pathname: "/edit",
+                            state: {data : data},
+                        }}>Edit</Link>
+                    <button className="btn btn-sm btn-danger" onClick={() => this.props.onDeleteUser(index)}>Hapus</button>
+                   </>
            }else{
-            aksi = <td><Link to={{
-                pathname: "/detail",
-                state: {data : data}
-            }}>Lihat Detail</Link></td>
+            aksi = <>
+                    <Link className="btn btn-sm btn-secondary" to={{
+                        pathname: "/detail",
+                        state: {data : data}
+                    }}>Lihat Detail</Link>
+                   </>
            }
            return (
               <tr key={id}>
-                 <td>{index+1}</td>
-                 <td>{name}</td>
-                 <td>{username}</td>
-                 <td>{email}</td>
-                 {aksi}
+                 <td key={id+"a"}>{index+1}</td>
+                 <td key={id+"b"}>{name}</td>
+                 <td key={id+"c"}>{username}</td>
+                 <td key={id+"d"}>{email}</td>
+                 <td key={id+"e"} nowrap="nowrap">{aksi}</td>
               </tr>
            )
         })
@@ -65,22 +72,36 @@ class ListUser extends Component {
                         this.props.statusLogin === "admin" ? <Link to="/register" className="btn btn-primary mb-2">Tambah Data</Link> : ""
                     }
                     <table className="table table-bordered table-hover" style={{width: 100 + "%",}} cellPadding="10px">
-                        <tr>
-                            <th>No</th>
-                            <th>Nama</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Aksi</th>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         {
                             // tr2
                             this.renderTableData()
                         }
+                        </tbody>
                     </table>
                 </CardBody>
             </Card>
         );
     }
 }
- 
-export default ListUser;
+
+const mapStateToProps = state => ({
+    dataUser: state.data.dataUser,
+    statusLogin: state.auth.statusLogin,
+    dataLogin: state.auth.dataLogin
+})
+
+const mapDispatchToProps = dispatch => ({
+    deleteData: (index) => dispatch({type: "delete", payload: {index: index}})
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListUser);

@@ -19,7 +19,8 @@ init = async () => {
     get(".btn-simpan").addEventListener("click", () => prosesDaftar());
     get(".nav-link[use='logout']").addEventListener("click", () => logout());
     get(".btn-search").addEventListener("click", async () => renderData(await getList(), get(".input-search").value));
-    renderData(await getList());
+    await getList();
+    renderData();
     // searchData("");
 }
 var getAll = (selector) => document.querySelectorAll(selector);
@@ -68,7 +69,7 @@ var renderData = (start="", end="", searchValue = "") => {
             `;
         });
     }
-    console.log(tr);
+    // console.log(tr);
     tbody.innerHTML += tr.join("");
     renderPagination(dataList.length, 10);
 }
@@ -129,7 +130,6 @@ var showData = async (key, start="", end="") => {
         end : pageSize
     }
     let d = Math.floor(paginationLimit/2);
-    console.log(page);
     pagination.innerHTML = "";
     pagination.innerHTML += `<li class="page-item page-link" start="0" end="${pageSize}">First</li>`
     pageStart = Math.ceil((setPage.start/pageSize)-d);

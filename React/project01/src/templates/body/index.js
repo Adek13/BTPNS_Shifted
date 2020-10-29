@@ -17,9 +17,6 @@ class Body extends Component {
     componentDidMount(){
         fetch('https://jsonplaceholder.typicode.com/users')
         .then(response => response.json())
-        .then(json => this.setState({
-            dataRegister : json
-        }))
     }
     onDeleteUser = async index => {
         let dataLama = this.state.dataRegister
@@ -72,39 +69,31 @@ class Body extends Component {
             <div className="main-content">
                 <Switch>
                     <Route path="/register">
-                        <Register addRegister={this.onClickRegister} dataRegister={this.state.dataRegister}/>
+                        <Register/>
                     </Route>
                     <Route path="/login">
                         <Login 
                             dataRegister={this.state.dataRegister} 
                             dataAdmin={this.state.dataAdmin} 
                             dataLogin={this.state.dataLogin} 
-                            updateLogin={this.updateLogin} 
-                            statusLogin={this.props.statusLogin}
                         />
                     </Route>
                     <Route path="/hubungi" >
                         <Hubungi statusLogin={this.props.statusLogin} />
                     </Route>
                     <Route path="/listUser">
-                        <ListUser 
-                            statusLogin={this.props.statusLogin} 
-                            dataLogin={this.state.dataLogin} 
-                            dataRegister={this.state.dataRegister}
-                            onDeleteUser={this.onDeleteUser}
-                            onUpdateData={this.onUpdateData}
-                        />
+                        <ListUser />
                     </Route>
                     <Route path="/tentang">
                         <Tentang statusLogin={this.props.statusLogin}/>
                     </Route>
                     <Route path="/detail" component={Detail}/>
-                    <Route path="/edit" component={Edit}/>
+                    <Route path="/edit" component={(props) => <Edit {...props} onUpdateData={this.onUpdateData}/>}/>
                     <Route exact path="/" component={Beranda}/>
                 </Switch>
             </div>
          );
     }
 }
- 
+
 export default Body;

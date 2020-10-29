@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {Nav, Body} from './templates';
+import {connect} from "react-redux"
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            statusLogin: false
          }
     }
     changeStatus = async status =>{
@@ -13,14 +13,36 @@ class App extends Component {
         })
         // console.log(status);
     }
+    componentDidMount() {
+        fetch('https://jsonplaceholder.typicode.com/users')
+        .then(response => response.json())
+        .then(json => {
+            let dataUser = json.map(data => ({...data, password: "123", status: "user"}))
+            let dataState = this.props.dataUser
+            for (let index = 0; index < dataUser.length; index++) {
+                dataState[index] = dataUser[index];
+            }
+            this.props.setData(dataState)
+        })
+    }
     render() { 
+        // console.log(this.props.data);
         return ( 
             <div className="body" style={this.props.style}>
-                <Nav changeStatus={this.changeStatus} statusLogin={this.state.statusLogin}/>
-                <Body changeStatus={this.changeStatus} statusLogin={this.state.statusLogin}/>
+                <Nav />
+                <Body />
             </div>
          );
     }
 }
- 
-export default App;
+
+const mapStateToProps = (state) => ({
+    dataUser: state.data.dataUser
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    setData: (data) => dispatch({type: "addUser", 
+                                 payload: {dataUser : data}
+                                })
+})
+export default connect(mapStateToProps, mapDispatchToProps)(App)

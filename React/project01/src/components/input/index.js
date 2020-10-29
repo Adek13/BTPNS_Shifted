@@ -5,6 +5,9 @@ class Input extends Component {
         super(props);
         this.state = {  }
     }
+    shouldComponentUpdate(){
+        return false
+    }
     render() { 
         return ( 
             <input 
@@ -15,6 +18,7 @@ class Input extends Component {
                 onChange={this.props.onChangeInput} 
                 value={this.props.value}    
                 readOnly={this.props.readonly}
+                defaultValue={this.props.defaultValue}
             />
          );
     }

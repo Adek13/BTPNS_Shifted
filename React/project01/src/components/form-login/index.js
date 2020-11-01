@@ -30,9 +30,9 @@ class FormLogin extends Component {
         // console.log(dataLogin);
     }
     render() { 
-        console.log("data user: ", this.props.dataUser);
-        console.log("data login: ", this.props.dataLogin);
-        console.log("status login: ", this.props.statusLogin);
+        // console.log("data user: ", this.props.dataUser);
+        // console.log("data login: ", this.props.dataLogin);
+        // console.log("status login: ", this.props.statusLogin);
         if(this.props.statusLogin)
             return <Redirect exact to="/" />
         return ( 

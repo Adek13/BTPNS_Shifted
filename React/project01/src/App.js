@@ -17,12 +17,17 @@ class App extends Component {
         fetch('https://jsonplaceholder.typicode.com/users')
         .then(response => response.json())
         .then(json => {
-            let dataUser = json.map(data => ({...data, password: "123", status: "user"}))
-            let dataState = this.props.dataUser
-            for (let index = 0; index < dataUser.length; index++) {
-                dataState[index] = dataUser[index];
-            }
-            this.props.setData(dataState)
+                if(this.props.dataUser !== undefined){
+                        let dataUser = json.map(data => ({...data, password: "123", status: "user"}))
+                    let dataState = this.props.dataUser
+                    for (let index = 0; index < dataUser.length; index++) {
+                        dataState[index] = dataUser[index];
+                        this.props.setData(dataState)
+                    }
+                }else{
+                    this.props.setData(json)
+                }
+            
         })
     }
     render() { 

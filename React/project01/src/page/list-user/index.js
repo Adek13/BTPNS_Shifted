@@ -11,7 +11,7 @@ class ListUser extends Component {
          }
     }
     renderTableData() {
-        const {dataUser, statusLogin, dataLogin} = this.props
+        let {dataUser, statusLogin, dataLogin} = this.props
         let aksi
         return dataUser.map((data, index) => {
            const { id, name, username, email } = data //destructuring
@@ -19,35 +19,35 @@ class ListUser extends Component {
                 aksi = <>
                         <Link className="btn btn-sm btn-secondary" to={{
                                 pathname: "/detail",
-                                state: {data : data}
+                                state: {index : index}
                             }}>Lihat Detail</Link>
                         <Link className="btn btn-sm btn-warning" to={{
                                 pathname: "/edit",
-                                state: {data : data}
+                                state: {index : index}
                             }}>Edit</Link>
                        </>
            }else if(statusLogin === "admin"){
             aksi = <>
                     <Link className="btn btn-sm btn-secondary" to={{
                             pathname: "/detail",
-                            state: {data : data}
+                            state: {index : index}
                         }}>Lihat Detail</Link>
                     <Link className="btn btn-sm btn-warning" to={{
                             pathname: "/edit",
-                            state: {data : data},
+                            state: {index : index},
                         }}>Edit</Link>
-                    <button className="btn btn-sm btn-danger" onClick={() => this.props.onDeleteUser(index)}>Hapus</button>
+                    <button className="btn btn-sm btn-danger" onClick={() => this.onClickDelete(index)}>Hapus</button>
                    </>
            }else{
             aksi = <>
                     <Link className="btn btn-sm btn-secondary" to={{
                         pathname: "/detail",
-                        state: {data : data}
+                        state: {index : index}
                     }}>Lihat Detail</Link>
                    </>
            }
            return (
-              <tr key={id}>
+              <tr key={index}>
                  <td key={id+"a"}>{index+1}</td>
                  <td key={id+"b"}>{name}</td>
                  <td key={id+"c"}>{username}</td>
@@ -57,11 +57,17 @@ class ListUser extends Component {
            )
         })
     }
+    onClickDelete = async (index) =>{
+        let dataLama = this.props.dataUser
+        await dataLama.splice(index, 1)
+        this.props.deleteData(dataLama)
+        // console.log(this.props);
+    }
     render() { 
-        if(!this.props.statusLogin){
-            alert("Silahkan Login Untuk Mengakses Halaman Ini!")
-            return <Redirect to="/login"/>
-        }
+        // if(!this.props.statusLogin){
+        //     alert("Silahkan Login Untuk Mengakses Halaman Ini!")
+        //     return <Redirect to="/login"/>
+        // }
         return ( 
             <Card style={{minWidth: 700, marginTop: 100, marginBottom: 200}}>
                 <CardTitle>
@@ -101,7 +107,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    deleteData: (index) => dispatch({type: "delete", payload: {index: index}})
+    deleteData: (data) => dispatch({type: "addUser", payload: {dataUser: data}})
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListUser);

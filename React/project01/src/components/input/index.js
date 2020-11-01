@@ -16,9 +16,9 @@ class Input extends Component {
                 className={"form-control "+this.props.className} 
                 name={this.props.name} 
                 onChange={this.props.onChangeInput} 
-                value={this.props.value}    
+                // value={this.props.value}    
                 readOnly={this.props.readonly}
-                defaultValue={this.props.defaultValue}
+                defaultValue={this.props.value}
             />
          );
     }

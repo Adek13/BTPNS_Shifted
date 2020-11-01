@@ -88,7 +88,7 @@ class Body extends Component {
                         <Tentang statusLogin={this.props.statusLogin}/>
                     </Route>
                     <Route path="/detail" component={Detail}/>
-                    <Route path="/edit" component={(props) => <Edit {...props} onUpdateData={this.onUpdateData}/>}/>
+                    <Route path="/edit" component={Edit}/>
                     <Route exact path="/" component={Beranda}/>
                 </Switch>
             </div>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
 import {Card, CardTitle, H1, CardBody} from "../../components"
 // import {Link} from "react-router-dom"
 
@@ -9,7 +10,8 @@ class Detail extends Component {
          }
     }
     render() { 
-        const data = this.props.location.state.data
+        const data = this.props.dataUser[this.props.location.state.index]
+        console.log(data);
         return ( 
             <Card style={{minWidth: 700, marginTop: 100, marginBottom: 200}}>
             <CardTitle>
@@ -101,7 +103,7 @@ class Detail extends Component {
                         <div className="row mb-2"><b>Street </b>{data.address.street}</div>
                         <div className="row mb-2"><b>City </b>{data.address.city}</div>
                         <div className="row mb-2"><b>Zipcode </b>{data.address.zipcode}</div>
-                        <div className="row mb-2"><b>Geo </b>Lat({data.address.geo.lat}), Lng({data.address.geo.lng})</div>
+                        {/* <div className="row mb-2"><b>Geo </b>Lat({data.address.geo.lat}), Lng({data.address.geo.lng})</div> */}
                     </div>
                 </div>
                 {/* show Company */}
@@ -123,5 +125,9 @@ class Detail extends Component {
         );
     }
 }
+
+const mapStateToProps = state => ({
+    dataUser : state.data.dataUser
+})
  
-export default Detail;
+export default connect(mapStateToProps)(Detail)

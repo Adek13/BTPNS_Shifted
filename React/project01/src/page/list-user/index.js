@@ -10,12 +10,32 @@ class ListUser extends Component {
             dataRegister : ""
          }
     }
-    renderTableData() {
-        let {dataUser, statusLogin, dataLogin} = this.props
+    componentDidMount(){
+        fetch("http://localhost:3000/user")
+        .then(response => response.json())
+        .then(json => this.setState({
+            dataRegister: json
+        }))
+    }
+    renderTableData = () => {
+        let dataUser = this.state.dataRegister
+        let {statusLogin, dataLogin} = this.props
         let aksi
-        return dataUser.map((data, index) => {
-           const { id, name, username, email } = data //destructuring
-           if(statusLogin === "user" && dataLogin.id === id){
+        if(dataUser.length){
+            return dataUser.map((data, index) => {
+            const { id, name, username, email } = data //destructuring
+            if(statusLogin === "user" && dataLogin.id === id){
+                    aksi = <>
+                            <Link className="btn btn-sm btn-secondary" to={{
+                                    pathname: "/detail",
+                                    state: {index : index}
+                                }}>Lihat Detail</Link>
+                            <Link className="btn btn-sm btn-warning" to={{
+                                    pathname: "/edit",
+                                    state: {index : index}
+                                }}>Edit</Link>
+                        </>
+            }else if(statusLogin === "admin"){
                 aksi = <>
                         <Link className="btn btn-sm btn-secondary" to={{
                                 pathname: "/detail",
@@ -23,39 +43,29 @@ class ListUser extends Component {
                             }}>Lihat Detail</Link>
                         <Link className="btn btn-sm btn-warning" to={{
                                 pathname: "/edit",
-                                state: {index : index}
+                                state: {index : index},
                             }}>Edit</Link>
-                       </>
-           }else if(statusLogin === "admin"){
-            aksi = <>
-                    <Link className="btn btn-sm btn-secondary" to={{
+                        <button className="btn btn-sm btn-danger" onClick={() => this.onClickDelete(index)}>Hapus</button>
+                    </>
+            }else{
+                aksi = <>
+                        <Link className="btn btn-sm btn-secondary" to={{
                             pathname: "/detail",
                             state: {index : index}
                         }}>Lihat Detail</Link>
-                    <Link className="btn btn-sm btn-warning" to={{
-                            pathname: "/edit",
-                            state: {index : index},
-                        }}>Edit</Link>
-                    <button className="btn btn-sm btn-danger" onClick={() => this.onClickDelete(index)}>Hapus</button>
-                   </>
-           }else{
-            aksi = <>
-                    <Link className="btn btn-sm btn-secondary" to={{
-                        pathname: "/detail",
-                        state: {index : index}
-                    }}>Lihat Detail</Link>
-                   </>
-           }
-           return (
-              <tr key={index}>
-                 <td key={id+"a"}>{index+1}</td>
-                 <td key={id+"b"}>{name}</td>
-                 <td key={id+"c"}>{username}</td>
-                 <td key={id+"d"}>{email}</td>
-                 <td key={id+"e"} nowrap="nowrap">{aksi}</td>
-              </tr>
-           )
-        })
+                    </>
+            }
+            return (
+                <tr key={index}>
+                    <td key={id+"a"}>{index+1}</td>
+                    <td key={id+"b"}>{name}</td>
+                    <td key={id+"c"}>{username}</td>
+                    <td key={id+"d"}>{email}</td>
+                    <td key={id+"e"} nowrap="nowrap">{aksi}</td>
+                </tr>
+            )
+            })
+        }
     }
     onClickDelete = async (index) =>{
         let dataLama = this.props.dataUser
@@ -64,10 +74,9 @@ class ListUser extends Component {
         // console.log(this.props);
     }
     render() { 
-        // if(!this.props.statusLogin){
-        //     alert("Silahkan Login Untuk Mengakses Halaman Ini!")
-        //     return <Redirect to="/login"/>
-        // }
+        if(!this.props.statusLogin){
+            return <Redirect to="/login"/>
+        }
         return ( 
             <Card style={{minWidth: 700, marginTop: 100, marginBottom: 200}}>
                 <CardTitle>

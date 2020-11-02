@@ -7,12 +7,13 @@ class Register extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            name : "",
-            username : "",
-            email: "",
-            password: "",
-            phone: "",
-            website : "",
+            "name" : "",
+            "username" : "",
+            "email": "",
+            "password": "",
+            "phone": "",
+            "website" : "",
+            "status" : "admin"
         }
     }
     onChangeInput = e =>{
@@ -22,22 +23,39 @@ class Register extends Component {
         })
     }
     onClickRegister = async () =>{
-        // console.log("tes");
-        let registered = await this.props.dataUser.filter(x => x.email === this.state.email)
-        console.log(registered)
+        let dataFetch = await this.fetchGetUser()
+        let registered = await dataFetch.filter(x => x.email === this.state.email)
         if(registered.length){
             alert("Email Sudah Digunakan, Silahkan Gunakan Email Lain!")
         }else{
-            let dataBaru = [...this.props.dataUser, {...this.state, status: "admin"}]
             // console.log(dataBaru);
-            this.props.doRegister(dataBaru)
+            // this.props.doRegister(dataBaru)
+            let fetch = await this.fetchRegister(this.state)
+            if(fetch.error){
+                alert("Gagal Registrasi")
+            }else{
+                alert("Registrasi Berhasil")
+            }
             this.setState(x => x.data = {})
             document.formRegister.reset()
-        }
-        
+        }        
+    }
+
+    fetchRegister = (dataRegister) => {
+        return fetch("http://localhost:3000/user/add", {
+            method: "POST",
+            headers: {
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify(dataRegister)
+        })
+        .then(response => response.json())
+    }
+    fetchGetUser = () => {
+        return fetch("http://localhost:3000/user")
+        .then(response => response.json())
     }
     render(){
-        console.log(this.props);
         return ( 
             <Card style={{minWidth: 700, marginTop: 100, marginBottom: 200}}>
                 <CardTitle>

@@ -18,17 +18,24 @@ class FormLogin extends Component {
         })
     }
     onClickLogin = async () =>{
-        let dataLogin = await this.props.dataUser.filter(data => data.username === this.state.username && data.password === this.state.password)
-        console.log(dataLogin);
-        if(dataLogin.length){
-            this.props.doLogin(dataLogin[0])
-            alert(`Selamat Datang ${dataLogin[0].name}`)
+        let dataUser = await this.fetchGetUser(this.state.username, this.state.password)
+        console.log(dataUser);
+        if(dataUser.length){
+            this.props.doLogin(dataUser[0])
+            alert(`Selamat Datang ${dataUser[0].name}`)
         }else{
             alert(`Username Atau Password Salah atau Belum Terdaftar!`)
         }
         
         // console.log(dataLogin);
     }
+
+    //get data user dari API
+    fetchGetUser = (username, password) => {
+        return fetch(`http://localhost:3000/user/${username}/${password}`)
+        .then(response => response.json())
+    }
+
     render() { 
         // console.log("data user: ", this.props.dataUser);
         // console.log("data login: ", this.props.dataLogin);
@@ -48,7 +55,6 @@ class FormLogin extends Component {
     }
 }
 const mapStateToProps = (state) => ({
-    dataUser: state.data.dataUser,
     dataLogin: state.auth.dataLogin,
     statusLogin: state.auth.statusLogin
 })

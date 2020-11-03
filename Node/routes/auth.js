@@ -22,7 +22,8 @@ router.post('/login', async (req, res) => {
             const token = jwt.sign(dataLogin, key, { expiresIn: '1h' })
             return responses(res, 200, "User Exist!", {
                 status: filtered.status,
-                token
+                token,
+                id: filtered.id
             })
         }else{
             return responses(res, 401, "User does not exist!!", [])

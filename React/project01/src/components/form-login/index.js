@@ -68,7 +68,8 @@ const mapDispatchToProps = (dispatch) => ({
     doLogin: (data) => dispatch({type: "login", 
                                  payload: {
                                             statusLogin: data.data.status, 
-                                            token: data.data.token
+                                            token: data.data.token,
+                                            id: data.data.id
                                         }
                                 })
 })

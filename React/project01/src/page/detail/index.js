@@ -14,13 +14,14 @@ class Detail extends Component {
         fetch(`http://localhost:3000/user/${this.props.location.state.id}`,{
             method: "GET",
             headers: {
-                "Authorization" : `Bearer ${this.props.dataLogin}`
+                "Authorization" : `Bearer ${this.props.dataLogin.token}`
             }
         })
         .then(response => response.json())
         .then(json => this.setState({dataUser : json.data}))
     }
     render() { 
+        console.log(this.props.location.state.id);
         const data = this.state.dataUser
             return ( 
                 <Card style={{minWidth: 700, marginTop: 100, marginBottom: 200}}>

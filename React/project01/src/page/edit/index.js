@@ -35,7 +35,7 @@ class Edit extends Component {
             method: "PUT",
             headers: {
                 "Content-Type" : "application/json",
-                "Authorization" : `Bearer ${this.props.dataLogin}`
+                "Authorization" : `Bearer ${this.props.dataLogin.token}`
             },
             body: JSON.stringify(data)
 
@@ -47,7 +47,7 @@ class Edit extends Component {
         fetch(`http://localhost:3000/user/${this.props.location.state.id}`,{
             method: "GET",
             headers: {
-                "Authorization" : `Bearer ${this.props.dataLogin}`
+                "Authorization" : `Bearer ${this.props.dataLogin.token}`
             }
         })
         .then(response => response.json())
@@ -59,6 +59,7 @@ class Edit extends Component {
     }
 
     render() { 
+        console.log(this.props.location.state.id);
         const data = this.state
         return ( 
             <Card style={{minWidth: 700, marginTop: 100, marginBottom: 200}}>

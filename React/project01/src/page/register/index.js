@@ -13,7 +13,7 @@ class Register extends Component {
             "password": "",
             "phone": "",
             "website" : "",
-            "status" : "admin"
+            "status" : ""
         }
     }
     onChangeInput = e =>{
@@ -23,7 +23,9 @@ class Register extends Component {
         })
     }
     onClickRegister = async () =>{
-        let fetch = await this.fetchRegister(this.state)
+        let data = {...this.state, "status": "admin"}
+        console.log(data);
+        let fetch = await this.fetchRegister(data)
         if(fetch.code!==200){
             alert("Email Sudah Digunakan!")
         }else{

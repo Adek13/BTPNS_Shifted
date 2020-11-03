@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require("../models/user")
 const jwtAuth = require("../middlewares/jwtAuth")
 
-/* GET user data. */
+/* GET user data no authentication. */
 router.get('/', (req, res) => {
   try {
     return responses(res, 200, "Sukses", User)
@@ -12,6 +12,7 @@ router.get('/', (req, res) => {
   }
 });
 
+// get user based on id with authentication
 router.get('/:id', jwtAuth, (dataLogin, req, res, next) => {
   try {
       let [filtered] = User.filter(data => data.id == req.params.id)
@@ -22,13 +23,14 @@ router.get('/:id', jwtAuth, (dataLogin, req, res, next) => {
 });
 
 // Post user data (add data to models)
-router.post('/add', (req, res) => {
+router.post('/add', async (req, res) => {
   try {
-    let [filtered] = User.filter(data => data.email == req.body.email)
-      if(filtered){
-        return responses(res, 409, "Email Sudah Ada")
-      }else{
-        User.push(req.body)
+    let [filtered] = await User.filter(data => data.email == req.body.email)
+    if(filtered){
+      return responses(res, 409, "Email Sudah Ada")
+    }else{
+        const data = {...req.body, "id" : new Date().getTime().toString()}
+        User.push(data)
         return responses(res, 200, "Berhasil Tambah")
       }
   } catch (error) {

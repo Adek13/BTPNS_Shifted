@@ -54,7 +54,7 @@ class ListUser extends Component {
                 aksi = <>
                         <Link className="btn btn-sm btn-secondary" to={{
                             pathname: "/detail",
-                            state: {index : index}
+                            state: {id : id}
                         }}>Lihat Detail</Link>
                     </>
             }
@@ -85,7 +85,7 @@ class ListUser extends Component {
         return fetch(`http://localhost:3000/user/${id}`,{
             method: "DELETE",
             headers: {
-                "Authorization" : `Bearer ${this.props.dataLogin}`
+                "Authorization" : `Bearer ${this.props.dataLogin.token}`
             }
         })
         .then(response => response.json())

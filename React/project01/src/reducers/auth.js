@@ -1,7 +1,10 @@
 const initialState = {
     statusLogin: false,
     dataUser: [],
-    dataLogin: {}
+    dataLogin: {
+        token : "",
+        id: ""
+    }
 }
 
 const authReducer = (state = initialState, action) => {
@@ -10,7 +13,10 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 statusLogin: action.payload.statusLogin,
-                dataLogin: action.payload.token,
+                dataLogin: {
+                    token : action.payload.token,
+                    id: action.payload.id
+                }
             }
         case "logout":
             return {

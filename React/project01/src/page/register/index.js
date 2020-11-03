@@ -23,19 +23,11 @@ class Register extends Component {
         })
     }
     onClickRegister = async () =>{
-        let dataFetch = await this.fetchGetUser()
-        let registered = await dataFetch.filter(x => x.email === this.state.email)
-        if(registered.length){
-            alert("Email Sudah Digunakan, Silahkan Gunakan Email Lain!")
+        let fetch = await this.fetchRegister(this.state)
+        if(fetch.code!==200){
+            alert("Email Sudah Digunakan!")
         }else{
-            // console.log(dataBaru);
-            // this.props.doRegister(dataBaru)
-            let fetch = await this.fetchRegister(this.state)
-            if(fetch.error){
-                alert("Gagal Registrasi")
-            }else{
-                alert("Registrasi Berhasil")
-            }
+            alert("Registrasi Berhasil")
             this.setState(x => x.data = {})
             document.formRegister.reset()
         }        
@@ -49,10 +41,6 @@ class Register extends Component {
             },
             body: JSON.stringify(dataRegister)
         })
-        .then(response => response.json())
-    }
-    fetchGetUser = () => {
-        return fetch("http://localhost:3000/user")
         .then(response => response.json())
     }
     render(){

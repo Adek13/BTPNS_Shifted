@@ -6,41 +6,60 @@ import {Card, CardTitle, H1, CardBody, FormLabel, Form, Btn} from "../../compone
 class Edit extends Component {
     constructor(props) {
         super(props);
-        this.state = { 
-            id: "",
-            name: "",
-            email: "",
-            username: "",
-            phone: "",
-            website: ""
+        this.state = {
+            "id" : "",
+            "name": "",
+            "username" : "",
+            "email": "",
+            "phone": "",
+            "website": ""
          }
     }
     onChangeInput = async e => {
-        this.setState({
+        await this.setState({
             [e.target.name] : e.target.value
         })
-        await console.log(this.state)
     }
 
     onClickSave = async () => {
-        let dataBaru = this.props.dataUser
-        await dataBaru.splice(this.props.location.state.index, 1, this.state)
-        if(this.props.onUpdate(dataBaru)){
-            alert("Berhasil Update Data!")
-        }else{
+        let fetched = await this.fetchEdit(this.state)
+        if(fetched.code !== 200){
             alert("Gagal Update Data!")
+        }else{
+            alert("Berhasil Update Data!")
         }
-        
+    }
+
+    fetchEdit = (data) => {
+        return fetch(`http://localhost:3000/user/${this.props.location.state.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type" : "application/json",
+                "Authorization" : `Bearer ${this.props.dataLogin}`
+            },
+            body: JSON.stringify(data)
+
+        })
+        .then(response => response.json())
+    }
+
+    setData = () => {
+        fetch(`http://localhost:3000/user/${this.props.location.state.id}`,{
+            method: "GET",
+            headers: {
+                "Authorization" : `Bearer ${this.props.dataLogin}`
+            }
+        })
+        .then(response => response.json())
+        .then(json => this.setState(json.data))
     }
 
     componentDidMount(){
-        const data = this.props.dataUser[this.props.location.state.index]
-        this.setState(data)
+        this.setData()
     }
 
     render() { 
-        const data = this.props.dataUser[this.props.location.state.index]
-        console.log(this.props)
+        const data = this.state
         return ( 
             <Card style={{minWidth: 700, marginTop: 100, marginBottom: 200}}>
             <CardTitle>
@@ -52,7 +71,7 @@ class Edit extends Component {
                     <FormLabel input={{type:"text", onChangeInput: this.onChangeInput, value: data.name, name:"name",  label: "Name"}}/>
                     <FormLabel input={{type:"text", onChangeInput: this.onChangeInput, value: data.username, name:"username",  label: "Username"}}/>
                     <FormLabel input={{type:"email", onChangeInput: this.onChangeInput, value: data.email, name:"email",  label: "Email"}}/>
-                    <FormLabel input={{type:"password", onChangeInput: this.onChangeInput, value: data.password, name:"password",  label: "Password"}}/>
+                    <FormLabel input={{type:"password", onChangeInput: this.onChangeInput, value: "", name:"password",  label: "Password"}}/>
                     <FormLabel input={{type:"text", onChangeInput: this.onChangeInput, value: data.phone, name:"phone",  label: "Phone"}}/>
                     <FormLabel input={{type:"text", onChangeInput: this.onChangeInput, value: data.website, name:"website",  label: "Website"}}/>
                     <div className="row justify-content-center">
@@ -66,16 +85,7 @@ class Edit extends Component {
 }
 
 const mapStateToProps = state => ({
-    dataUser: state.data.dataUser
-})
-
-const mapDispatchToProps = dispatch => ({
-    onUpdate: (data) => dispatch({
-        type: "updateUser",
-        payload: {
-            data: data
-        }
-    })
+    dataLogin: state.auth.dataLogin
 })
  
-export default connect(mapStateToProps,mapDispatchToProps)(Edit);
+export default connect(mapStateToProps)(Edit)

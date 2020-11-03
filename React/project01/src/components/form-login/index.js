@@ -9,6 +9,8 @@ class FormLogin extends Component {
     constructor(props) {
         super(props);
         this.state = { 
+            "username": "",
+            "password": ""
          }
     }
     onChangeInput = e =>{
@@ -18,11 +20,10 @@ class FormLogin extends Component {
         })
     }
     onClickLogin = async () =>{
-        let dataUser = await this.fetchGetUser(this.state.username, this.state.password)
-        console.log(dataUser);
-        if(dataUser.length){
-            this.props.doLogin(dataUser[0])
-            alert(`Selamat Datang ${dataUser[0].name}`)
+        let dataUser = await this.fetchLogin(this.state)
+        if(dataUser.code === 200){
+            this.props.doLogin(dataUser)
+            alert(`Selamat Datang`)
         }else{
             alert(`Username Atau Password Salah atau Belum Terdaftar!`)
         }
@@ -31,8 +32,14 @@ class FormLogin extends Component {
     }
 
     //get data user dari API
-    fetchGetUser = (username, password) => {
-        return fetch(`http://localhost:3000/user/${username}/${password}`)
+    fetchLogin = (data) => {
+        return fetch(`http://localhost:3000/auth/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify(data)
+        })
         .then(response => response.json())
     }
 
@@ -55,14 +62,13 @@ class FormLogin extends Component {
     }
 }
 const mapStateToProps = (state) => ({
-    dataLogin: state.auth.dataLogin,
     statusLogin: state.auth.statusLogin
 })
 const mapDispatchToProps = (dispatch) => ({
     doLogin: (data) => dispatch({type: "login", 
                                  payload: {
-                                            statusLogin: data.status, 
-                                            dataInput: data
+                                            statusLogin: data.data.status, 
+                                            token: data.data.token
                                         }
                                 })
 })

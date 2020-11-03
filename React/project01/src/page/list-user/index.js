@@ -11,10 +11,13 @@ class ListUser extends Component {
          }
     }
     componentDidMount(){
+        this.setData()
+    }
+    setData = () => {
         fetch("http://localhost:3000/user")
         .then(response => response.json())
         .then(json => this.setState({
-            dataRegister: json
+            dataRegister: json.data
         }))
     }
     renderTableData = () => {
@@ -28,24 +31,24 @@ class ListUser extends Component {
                     aksi = <>
                             <Link className="btn btn-sm btn-secondary" to={{
                                     pathname: "/detail",
-                                    state: {index : index}
+                                    state: {id : id}
                                 }}>Lihat Detail</Link>
                             <Link className="btn btn-sm btn-warning" to={{
                                     pathname: "/edit",
-                                    state: {index : index}
+                                    state: {id : id}
                                 }}>Edit</Link>
                         </>
             }else if(statusLogin === "admin"){
                 aksi = <>
                         <Link className="btn btn-sm btn-secondary" to={{
                                 pathname: "/detail",
-                                state: {index : index}
+                                state: {id : id}
                             }}>Lihat Detail</Link>
                         <Link className="btn btn-sm btn-warning" to={{
                                 pathname: "/edit",
-                                state: {index : index},
+                                state: {id : id},
                             }}>Edit</Link>
-                        <button className="btn btn-sm btn-danger" onClick={() => this.onClickDelete(index)}>Hapus</button>
+                        <button className="btn btn-sm btn-danger" onClick={() => this.onClickDelete(id)}>Hapus</button>
                     </>
             }else{
                 aksi = <>
@@ -67,11 +70,25 @@ class ListUser extends Component {
             })
         }
     }
-    onClickDelete = async (index) =>{
-        let dataLama = this.props.dataUser
-        await dataLama.splice(index, 1)
-        this.props.deleteData(dataLama)
-        // console.log(this.props);
+    onClickDelete = async (id) =>{
+        let fetch = await this.fetchDelete(id)
+        console.log(fetch);
+        if(fetch.code!==200){
+            alert("Gagal Hapus")
+        }else{
+            this.setData()
+            alert("Hapus Berhasil")
+        }
+    }
+
+    fetchDelete = (id) => {
+        return fetch(`http://localhost:3000/user/${id}`,{
+            method: "DELETE",
+            headers: {
+                "Authorization" : `Bearer ${this.props.dataLogin}`
+            }
+        })
+        .then(response => response.json())
     }
     render() { 
         if(!this.props.statusLogin){

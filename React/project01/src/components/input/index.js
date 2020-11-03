@@ -5,9 +5,6 @@ class Input extends Component {
         super(props);
         this.state = {  }
     }
-    shouldComponentUpdate(){
-        return false
-    }
     render() { 
         return ( 
             <input 

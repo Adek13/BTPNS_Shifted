@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {Card, CardTitle, H1, CardBody} from "../../components"
 import {Link, Redirect} from "react-router-dom"
 import { connect } from 'react-redux';
+import jwt_decode from "jwt-decode";
 
 class ListUser extends Component {
     constructor(props) {
@@ -13,8 +14,13 @@ class ListUser extends Component {
     componentDidMount(){
         this.setData()
     }
+
     setData = () => {
-        fetch("http://localhost:3000/user")
+        fetch("http://localhost:3000/user",{
+            headers: {
+                "Authorization" : `Bearer ${this.props.dataLogin.token}`
+            }
+        })
         .then(response => response.json())
         .then(json => this.setState({
             dataRegister: json.data
@@ -27,7 +33,8 @@ class ListUser extends Component {
         if(dataUser.length){
             return dataUser.map((data, index) => {
             const { id, name, username, email } = data //destructuring
-            if(statusLogin === "user" && dataLogin.id === id){
+            const id_login = jwt_decode(dataLogin.token).id
+            if(statusLogin === "user" && id_login === id){
                     aksi = <>
                             <Link className="btn btn-sm btn-secondary" to={{
                                     pathname: "/detail",
@@ -127,13 +134,8 @@ class ListUser extends Component {
 }
 
 const mapStateToProps = state => ({
-    dataUser: state.data.dataUser,
     statusLogin: state.auth.statusLogin,
     dataLogin: state.auth.dataLogin
 })
 
-const mapDispatchToProps = dispatch => ({
-    deleteData: (data) => dispatch({type: "addUser", payload: {dataUser: data}})
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(ListUser);
+export default connect(mapStateToProps)(ListUser);

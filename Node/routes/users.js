@@ -4,7 +4,7 @@ const User = require("../models/user")
 const jwtAuth = require("../middlewares/jwtAuth")
 
 /* GET user data no authentication. */
-router.get('/', (req, res) => {
+router.get('/', jwtAuth, (dataLogin, req, res, next) => {
   try {
     return responses(res, 200, "Sukses", User)
   } catch (error) {
@@ -67,7 +67,7 @@ router.delete('/:id', jwtAuth, async (dataLogin, req, res, next) => {
 });
 
 const responses = (res, code, message, data) => {
-  return res.send({
+  return res.status(code).send({
       code,
       message,
       data

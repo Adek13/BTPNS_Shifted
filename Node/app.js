@@ -28,4 +28,11 @@ app.use("/", indexRoute)
 app.use("/auth", authRoute)
 app.use("/user", userRoute)
 
+const response = (res, code, message, data) => {
+    res.status(code).send({
+        code,
+        message,
+        data
+    })
+}
 module.exports = app

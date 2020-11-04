@@ -7,13 +7,13 @@ class Register extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            "name" : "",
-            "username" : "",
-            "email": "",
-            "password": "",
-            "phone": "",
-            "website" : "",
-            "status" : ""
+            name : "",
+            username : "",
+            email: "",
+            password: "",
+            phone: "",
+            website : "",
+            status : ""
         }
     }
     onChangeInput = e =>{

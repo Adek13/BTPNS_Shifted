@@ -9,8 +9,8 @@ class FormLabel extends Component {
     render() { 
         return ( 
         <div className="form-group row">
-            <label className="col-sm-3 col-form-label">{this.props.input.label}</label>
-            <div className="col-sm-9">
+            <label className="col-sm-4 col-form-label">{this.props.input.label}</label>
+            <div className="col-sm-8">
             <Input 
                 type={this.props.input.type} 
                 placeholder={this.props.input.placeholder} 

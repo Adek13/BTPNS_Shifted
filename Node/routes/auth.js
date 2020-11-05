@@ -1,10 +1,13 @@
 var express     = require('express')
 var router      = express.Router()
-const authController = require()
+const authController = require("../controller/auth")
 
-//key for jwt
-const key = process.env.JWT_KEY
+router.post("/login", (req, res) => {
+    return authController.login(req, res)
+})
 
-/* Handle authentication on login. */
-router.post('/login', )
+router.post("/register", (req, res) => {
+    return authController.register(req, res)
+})
+
 module.exports = router

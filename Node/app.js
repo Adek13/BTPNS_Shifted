@@ -21,14 +21,16 @@ app.use(cors())
 const indexRoute = require("./routes/index")
 const authRoute = require("./routes/auth")
 const userRoute = require("./routes/users")
+const departmentRoute = require("./routes/department")
 
 
 //apply route
 app.use("/", indexRoute)
 app.use("/auth", authRoute)
 app.use("/user", userRoute)
+app.use("/department", departmentRoute)
 
-const response = (res, code, message, data) => {
+const responses = (res, code, message, data) => {
     res.status(code).send({
         code,
         message,

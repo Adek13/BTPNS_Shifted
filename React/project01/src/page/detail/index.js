@@ -21,36 +21,24 @@ class Detail extends Component {
         .then(json => this.setState({dataUser : json.data}))
     }
     render() { 
-        console.log(this.props.location.state.id);
+        console.log(this.state);
         const data = this.state.dataUser
             return ( 
                 <Card style={{minWidth: 700, marginTop: 100, marginBottom: 200}}>
                 <CardTitle>
-            <H1 className="text-center mt-3">Detail User {}</H1>
+                    <H1 className="text-center mt-3">Detail User "{data.username}"</H1>
                 </CardTitle>
                 <CardBody style={{padding: 50}}>
-                    {/* show ID */}
+                    {/* show Username */}
                     <div className="row mb-2">
                         <div className="col-4">
-                            ID
+                            Username
                         </div>
                         <div className="col-1">
                             :
                         </div>
                         <div className="col-7">
-                            {data.id}
-                        </div>
-                    </div>
-                    {/* show Name */}
-                    <div className="row mb-2">
-                        <div className="col-4">
-                            Name
-                        </div>
-                        <div className="col-1">
-                            :
-                        </div>
-                        <div className="col-7">
-                            {data.name}
+                            {data.username}
                         </div>
                     </div>
                     {/* show Email */}
@@ -65,40 +53,16 @@ class Detail extends Component {
                             {data.email}
                         </div>
                     </div>
-                    {/* show Username */}
+                    {/* show Status */}
                     <div className="row mb-2">
                         <div className="col-4">
-                            Username
+                            Status
                         </div>
                         <div className="col-1">
                             :
                         </div>
                         <div className="col-7">
-                            {data.username}
-                        </div>
-                    </div>
-                    {/* show Phone */}
-                    <div className="row mb-2">
-                        <div className="col-4">
-                            Phone
-                        </div>
-                        <div className="col-1">
-                            :
-                        </div>
-                        <div className="col-7">
-                            {data.phone}
-                        </div>
-                    </div>
-                    {/* show Website */}
-                    <div className="row mb-2">
-                        <div className="col-4">
-                            Website
-                        </div>
-                        <div className="col-1">
-                            :
-                        </div>
-                        <div className="col-7">
-                            {data.website}
+                            {data.status}
                         </div>
                     </div>
                 </CardBody>

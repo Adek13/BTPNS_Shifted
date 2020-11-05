@@ -7,7 +7,7 @@ class Option extends Component {
     }
     render() { 
         return ( 
-            <option value={this.props.isi}>{this.props.isi}</option>
+            <option value={this.props.value} selected={this.props.selected}>{this.props.children}</option>
          );
     }
 }

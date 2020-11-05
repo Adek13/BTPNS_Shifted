@@ -8,10 +8,10 @@ class Select extends Component {
     }
     render() { 
         return ( 
-            <select name={this.props.name} className={`input--style-1 ${this.props.className}`} onChange={this.props.onChangeInput}>
+            <select name={this.props.name} className={this.props.className} onChange={this.props.onchange} value={this.props.value}>
                 {
-                    this.props.isiOption.map(element => {
-                        return <Option isi={element} key={element}/>
+                    this.props.isiOption.map((element, index) => {
+                        return <Option value={element[0]}  key={index}>{element[1]}</Option>
                     })
                 }
             </select>

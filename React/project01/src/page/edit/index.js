@@ -1,18 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import {Card, CardTitle, H1, CardBody, FormLabel, Form, Btn} from "../../components"
+import {Card, CardTitle, H1, CardBody, FormLabel, Form, Btn, SelectLabel} from "../../components"
 // import {Link} from "react-router-dom"
 
 class Edit extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            "id" : "",
-            "name": "",
-            "username" : "",
+            "username": "",
             "email": "",
-            "phone": "",
-            "website": ""
+            "password": "",
+            "status": "",
+            "isiOption": [["", "Pilih Status"]]
          }
     }
     onChangeInput = async e => {
@@ -51,7 +50,9 @@ class Edit extends Component {
             }
         })
         .then(response => response.json())
-        .then(json => this.setState(json.data))
+        .then(json => {
+            this.setState(json.data)
+        })
     }
 
     componentDidMount(){
@@ -59,7 +60,6 @@ class Edit extends Component {
     }
 
     render() { 
-        console.log(this.props.location.state.id);
         const data = this.state
         return ( 
             <Card style={{minWidth: 700, marginTop: 100, marginBottom: 200}}>
@@ -68,13 +68,21 @@ class Edit extends Component {
             </CardTitle>
             <CardBody style={{padding: 50}}>
                 <Form>
-                    <FormLabel input={{type:"text", onChangeInput: this.onChangeInput, value: data.id, name:"id",  label: "ID", readonly:true}}/>
-                    <FormLabel input={{type:"text", onChangeInput: this.onChangeInput, value: data.name, name:"name",  label: "Name"}}/>
                     <FormLabel input={{type:"text", onChangeInput: this.onChangeInput, value: data.username, name:"username",  label: "Username"}}/>
                     <FormLabel input={{type:"email", onChangeInput: this.onChangeInput, value: data.email, name:"email",  label: "Email"}}/>
                     <FormLabel input={{type:"password", onChangeInput: this.onChangeInput, value: "", name:"password",  label: "Password"}}/>
-                    <FormLabel input={{type:"text", onChangeInput: this.onChangeInput, value: data.phone, name:"phone",  label: "Phone"}}/>
-                    <FormLabel input={{type:"text", onChangeInput: this.onChangeInput, value: data.website, name:"website",  label: "Website"}}/>
+                    {
+                        this.props.statusLogin === "admin" 
+                        ?
+                        <SelectLabel isiOption ={[["", "Pilih Status"], ["1", "User"], ["2", "Admin"]]} 
+                            onchange={(e) => this.setState({"id_role": e.target.value})} 
+                            label="Status" 
+                            className="custom-select" 
+                            value={this.state.id_role}
+                        />
+                        :
+                        <></>
+                    }
                     <div className="row justify-content-center">
                         <Btn className="btn btn-success btn-lg mt-2" onClick={() => this.onClickSave()}>Save</Btn>
                     </div>
@@ -86,6 +94,7 @@ class Edit extends Component {
 }
 
 const mapStateToProps = state => ({
+    statusLogin: state.auth.statusLogin,
     dataLogin: state.auth.dataLogin
 })
  

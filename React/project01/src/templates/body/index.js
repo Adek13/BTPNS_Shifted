@@ -14,10 +14,6 @@ class Body extends Component {
             dataLogin: {}
         }
     }
-    componentDidMount(){
-        fetch('https://jsonplaceholder.typicode.com/users')
-        .then(response => response.json())
-    }
     onDeleteUser = async index => {
         let dataLama = this.state.dataRegister
         dataLama.splice(index,1)

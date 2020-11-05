@@ -4,6 +4,7 @@ import "./style.css"
 import {Card, CardBody, Btn} from "../"
 import {connect} from "react-redux"
 import { Redirect } from "react-router-dom";
+import jwtDecode from 'jwt-decode'
 
 class FormLogin extends Component {
     constructor(props) {
@@ -67,9 +68,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     doLogin: (data) => dispatch({type: "login", 
                                  payload: {
-                                            statusLogin: data.data.status, 
+                                            statusLogin: jwtDecode(data.data.token).status, 
                                             token: data.data.token,
-                                            id: data.data.id
                                         }
                                 })
 })

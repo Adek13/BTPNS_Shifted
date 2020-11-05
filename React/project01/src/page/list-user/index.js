@@ -32,46 +32,46 @@ class ListUser extends Component {
         let aksi
         if(dataUser.length){
             return dataUser.map((data, index) => {
-            const { id, name, username, email } = data //destructuring
-            const id_login = jwt_decode(dataLogin.token).id
-            if(statusLogin === "user" && id_login === id){
+            const { id_user, username, email, status } = data //destructuring
+            const id_login = jwt_decode(dataLogin.token).id_user
+            if(statusLogin === "user" && id_login === id_user){
                     aksi = <>
                             <Link className="btn btn-sm btn-secondary" to={{
                                     pathname: "/detail",
-                                    state: {id : id}
+                                    state: {id : id_user}
                                 }}>Lihat Detail</Link>
                             <Link className="btn btn-sm btn-warning" to={{
                                     pathname: "/edit",
-                                    state: {id : id}
+                                    state: {id : id_user}
                                 }}>Edit</Link>
                         </>
-            }else if(statusLogin === "admin"){
+            }else if(statusLogin === "admin" && (status === "user" || id_login === id_user)){
                 aksi = <>
                         <Link className="btn btn-sm btn-secondary" to={{
                                 pathname: "/detail",
-                                state: {id : id}
+                                state: {id : id_user}
                             }}>Lihat Detail</Link>
                         <Link className="btn btn-sm btn-warning" to={{
                                 pathname: "/edit",
-                                state: {id : id},
+                                state: {id : id_user},
                             }}>Edit</Link>
-                        <button className="btn btn-sm btn-danger" onClick={() => this.onClickDelete(id)}>Hapus</button>
+                        <button className="btn btn-sm btn-danger" onClick={() => this.onClickDelete(id_user)}>Hapus</button>
                     </>
             }else{
                 aksi = <>
                         <Link className="btn btn-sm btn-secondary" to={{
                             pathname: "/detail",
-                            state: {id : id}
+                            state: {id : id_user}
                         }}>Lihat Detail</Link>
                     </>
             }
             return (
                 <tr key={index}>
-                    <td key={id+"a"}>{index+1}</td>
-                    <td key={id+"b"}>{name}</td>
-                    <td key={id+"c"}>{username}</td>
-                    <td key={id+"d"}>{email}</td>
-                    <td key={id+"e"} nowrap="nowrap">{aksi}</td>
+                    <td key={id_user+"a"}>{index+1}</td>
+                    <td key={id_user+"c"}>{username}</td>
+                    <td key={id_user+"d"}>{email}</td>
+                    <td key={id_user+"b"}>{status}</td>
+                    <td key={id_user+"e"} nowrap="nowrap">{aksi}</td>
                 </tr>
             )
             })
@@ -101,6 +101,13 @@ class ListUser extends Component {
         if(!this.props.statusLogin){
             return <Redirect to="/login"/>
         }
+        let button
+        if(this.props.statusLogin === "admin"){
+            button = <>
+                        <Link to="/register" className="btn btn-primary mb-2">Tambah Data</Link>
+                        <Link to="/manajemen_role" className="btn btn-success mb-2 ml-2">Manajemen Role</Link>
+                     </>
+        }
         return ( 
             <Card style={{minWidth: 700, marginTop: 100, marginBottom: 200}}>
                 <CardTitle>
@@ -108,15 +115,15 @@ class ListUser extends Component {
                 </CardTitle>
                 <CardBody style={{padding: 50}}>
                     {
-                        this.props.statusLogin === "admin" ? <Link to="/register" className="btn btn-primary mb-2">Tambah Data</Link> : ""
+                        button
                     }
                     <table className="table table-bordered table-hover" style={{width: 100 + "%",}} cellPadding="10px">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama</th>
                                 <th>Username</th>
                                 <th>Email</th>
+                                <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>

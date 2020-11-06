@@ -1,28 +1,18 @@
 const initialState = {
-    statusLogin: false,
-    dataUser: [],
-    dataLogin: {
-        token : "",
-        id: ""
-    }
+    dataLogin: ""
 }
 
 const authReducer = (state = initialState, action) => {
     switch (action.type) {
         case "login":
             return {
-                ...state,
-                statusLogin: action.payload.statusLogin,
-                dataLogin: {
-                    token : action.payload.token,
-                    id: action.payload.id
-                }
+                    ...state,
+                    dataLogin: action.payload.token
             }
         case "logout":
             return {
                 ...state,
-                dataLogin: {},
-                statusLogin: false
+                dataLogin: ""
             }
         default:
             return state

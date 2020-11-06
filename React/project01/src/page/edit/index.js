@@ -1,3 +1,4 @@
+import JwtDecode from 'jwt-decode';
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import {Card, CardTitle, H1, CardBody, FormLabel, Form, Btn, SelectLabel} from "../../components"
@@ -34,7 +35,7 @@ class Edit extends Component {
             method: "PUT",
             headers: {
                 "Content-Type" : "application/json",
-                "Authorization" : `Bearer ${this.props.dataLogin.token}`
+                "Authorization" : `Bearer ${this.props.token}`
             },
             body: JSON.stringify(data)
 
@@ -46,7 +47,7 @@ class Edit extends Component {
         fetch(`http://localhost:3000/user/${this.props.location.state.id}`,{
             method: "GET",
             headers: {
-                "Authorization" : `Bearer ${this.props.dataLogin.token}`
+                "Authorization" : `Bearer ${this.props.token}`
             }
         })
         .then(response => response.json())
@@ -72,7 +73,7 @@ class Edit extends Component {
                     <FormLabel input={{type:"email", onChangeInput: this.onChangeInput, value: data.email, name:"email",  label: "Email"}}/>
                     <FormLabel input={{type:"password", onChangeInput: this.onChangeInput, value: "", name:"password",  label: "Password"}}/>
                     {
-                        this.props.statusLogin === "admin" 
+                        this.props.dataLogin.status === "admin" 
                         ?
                         <SelectLabel isiOption ={[["", "Pilih Status"], ["1", "User"], ["2", "Admin"]]} 
                             onchange={(e) => this.setState({"id_role": e.target.value})} 
@@ -94,8 +95,8 @@ class Edit extends Component {
 }
 
 const mapStateToProps = state => ({
-    statusLogin: state.auth.statusLogin,
-    dataLogin: state.auth.dataLogin
+    dataLogin: JwtDecode(state.auth.dataLogin),
+    token: state.auth.dataLogin
 })
  
 export default connect(mapStateToProps)(Edit)

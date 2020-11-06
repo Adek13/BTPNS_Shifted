@@ -65,7 +65,6 @@ class Register extends Component {
         .then(response => response.json())
     }
     render(){
-        console.log(this.state);
         return ( 
             <Card style={{minWidth: 700, marginTop: 100, marginBottom: 200}}>
                 <CardTitle>

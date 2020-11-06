@@ -18,7 +18,7 @@ class ListUser extends Component {
     setData = () => {
         fetch("http://localhost:3000/user",{
             headers: {
-                "Authorization" : `Bearer ${this.props.dataLogin.token}`
+                "Authorization" : `Bearer ${this.props.token}`
             }
         })
         .then(response => response.json())
@@ -28,13 +28,13 @@ class ListUser extends Component {
     }
     renderTableData = () => {
         let dataUser = this.state.dataRegister
-        let {statusLogin, dataLogin} = this.props
+        let {dataLogin} = this.props
         let aksi
         if(dataUser.length){
             return dataUser.map((data, index) => {
             const { id_user, username, email, status } = data //destructuring
-            const id_login = jwt_decode(dataLogin.token).id_user
-            if(statusLogin === "user" && id_login === id_user){
+            const id_login = this.props.dataLogin.id_user
+            if(dataLogin.status === "user" && id_login === id_user){
                     aksi = <>
                             <Link className="btn btn-sm btn-secondary" to={{
                                     pathname: "/detail",
@@ -45,7 +45,18 @@ class ListUser extends Component {
                                     state: {id : id_user}
                                 }}>Edit</Link>
                         </>
-            }else if(statusLogin === "admin" && (status === "user" || id_login === id_user)){
+            }else if(dataLogin.status === "admin" && (id_login === id_user)){
+                aksi = <>
+                        <Link className="btn btn-sm btn-secondary" to={{
+                                pathname: "/detail",
+                                state: {id : id_user}
+                            }}>Lihat Detail</Link>
+                        <Link className="btn btn-sm btn-warning" to={{
+                                pathname: "/edit",
+                                state: {id : id_user},
+                            }}>Edit</Link>
+                    </>
+            }else if(dataLogin.status === "admin"){
                 aksi = <>
                         <Link className="btn btn-sm btn-secondary" to={{
                                 pathname: "/detail",
@@ -59,11 +70,11 @@ class ListUser extends Component {
                     </>
             }else{
                 aksi = <>
-                        <Link className="btn btn-sm btn-secondary" to={{
-                            pathname: "/detail",
-                            state: {id : id_user}
-                        }}>Lihat Detail</Link>
-                    </>
+                            <Link className="btn btn-sm btn-secondary" to={{
+                                    pathname: "/detail",
+                                    state: {id : id_user}
+                                }}>Lihat Detail</Link>
+                        </>
             }
             return (
                 <tr key={index}>
@@ -79,7 +90,6 @@ class ListUser extends Component {
     }
     onClickDelete = async (id) =>{
         let fetch = await this.fetchDelete(id)
-        console.log(fetch);
         if(fetch.code!==200){
             alert("Gagal Hapus")
         }else{
@@ -92,17 +102,17 @@ class ListUser extends Component {
         return fetch(`http://localhost:3000/user/${id}`,{
             method: "DELETE",
             headers: {
-                "Authorization" : `Bearer ${this.props.dataLogin.token}`
+                "Authorization" : `Bearer ${this.props.token}`
             }
         })
         .then(response => response.json())
     }
     render() { 
-        if(!this.props.statusLogin){
+        if(!this.props.dataLogin === ""){
             return <Redirect to="/login"/>
         }
         let button
-        if(this.props.statusLogin === "admin"){
+        if(this.props.dataLogin.status === "admin"){
             button = <>
                         <Link to="/register" className="btn btn-primary mb-2">Tambah Data</Link>
                         <Link to="/manajemen_role" className="btn btn-success mb-2 ml-2">Manajemen Role</Link>
@@ -129,7 +139,6 @@ class ListUser extends Component {
                         </thead>
                         <tbody>
                         {
-                            // tr2
                             this.renderTableData()
                         }
                         </tbody>
@@ -141,8 +150,8 @@ class ListUser extends Component {
 }
 
 const mapStateToProps = state => ({
-    statusLogin: state.auth.statusLogin,
-    dataLogin: state.auth.dataLogin
+    token: state.auth.dataLogin,
+    dataLogin: state.auth.dataLogin !== "" ? jwt_decode(state.auth.dataLogin) : ""
 })
 
 export default connect(mapStateToProps)(ListUser);

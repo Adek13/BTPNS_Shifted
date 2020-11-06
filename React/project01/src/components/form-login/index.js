@@ -45,10 +45,7 @@ class FormLogin extends Component {
     }
 
     render() { 
-        // console.log("data user: ", this.props.dataUser);
-        // console.log("data login: ", this.props.dataLogin);
-        // console.log("status login: ", this.props.statusLogin);
-        if(this.props.statusLogin)
+        if(this.props.dataLogin.status)
             return <Redirect exact to="/" />
         return ( 
             <Card style={{maxWidth: 500, padding: 25, marginRight: 100}}>
@@ -63,12 +60,11 @@ class FormLogin extends Component {
     }
 }
 const mapStateToProps = (state) => ({
-    statusLogin: state.auth.statusLogin
+    dataLogin: state.auth.dataLogin !== "" ? jwtDecode(state.auth.dataLogin) : ""
 })
 const mapDispatchToProps = (dispatch) => ({
     doLogin: (data) => dispatch({type: "login", 
                                  payload: {
-                                            statusLogin: jwtDecode(data.data.token).status, 
                                             token: data.data.token,
                                         }
                                 })

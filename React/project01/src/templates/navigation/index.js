@@ -3,13 +3,14 @@ import {HeaderItem} from "../../components"
 import {NavLink} from "react-router-dom"
 import "./style.css"
 import { connect } from "react-redux";
+import JwtDecode from "jwt-decode";
 class Nav extends Component {
     constructor(props) {
         super(props);
         this.state = { }
     }
     shouldComponentUpdate(lastProps){
-        if(lastProps.statusLogin !== this.props.statusLogin){
+        if(lastProps.dataLogin.status !== this.props.dataLogin.status){
             return true          
         }else{
             return false
@@ -28,17 +29,19 @@ class Nav extends Component {
                 <HeaderItem content="Hubungi" >Hubungi Kami</HeaderItem>
             </NavLink>
             {
-                this.props.statusLogin ? 
+                this.props.dataLogin.status ? 
                 <>
                     <NavLink activeClassName="active" to="/listUser">
                         <HeaderItem content="ListUser">List Users</HeaderItem>
-                    </NavLink>
-                    <HeaderItem content="Logout" goTo={() => this.props.doLogout()}>Logout</HeaderItem>
+                    </NavLink >
+                    <NavLink activeClassName="active" to="/login">
+                        <HeaderItem content="Logout" goTo={() => this.props.doLogout()}>Logout</HeaderItem>
+                    </NavLink >
                 </>
                 :
                 <>
                     <NavLink activeClassName="active" to="/login">
-                        <HeaderItem content="Masuk" statusLogin={this.props.statusLogin}>Masuk</HeaderItem>
+                        <HeaderItem content="Masuk">Masuk</HeaderItem>
                     </NavLink>
                     <NavLink activeClassName="active" to="/register">
                         <HeaderItem content="Daftar">Daftar</HeaderItem>
@@ -49,7 +52,7 @@ class Nav extends Component {
     }
 }
 const mapStateToProps = (state) => ({
-    statusLogin: state.auth.statusLogin
+    dataLogin: state.auth.dataLogin !== "" ? JwtDecode(state.auth.dataLogin) : {status: false}
 })
 
 const mapDispatchToProps = (dispatch) => ({

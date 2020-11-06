@@ -45,7 +45,7 @@ class FormLogin extends Component {
     }
 
     render() { 
-        if(this.props.dataLogin.status)
+        if(this.props.dataLogin !== "")
             return <Redirect exact to="/" />
         return ( 
             <Card style={{maxWidth: 500, padding: 25, marginRight: 100}}>

@@ -22,9 +22,13 @@ class ListUser extends Component {
             }
         })
         .then(response => response.json())
-        .then(json => this.setState({
-            dataRegister: json.data
-        }))
+        .then(json => {
+            if(json.code === 200){
+                this.setState({
+                    dataRegister: json.data
+                })
+            }
+        })
     }
     renderTableData = () => {
         let dataUser = this.state.dataRegister
@@ -108,7 +112,7 @@ class ListUser extends Component {
         .then(response => response.json())
     }
     render() { 
-        if(!this.props.dataLogin === ""){
+        if(this.props.dataLogin === ""){
             return <Redirect to="/login"/>
         }
         let button
